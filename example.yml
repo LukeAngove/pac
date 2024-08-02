@@ -1,0 +1,195 @@
+templates:
+  page_layouts:
+    main_image: &main_image
+      type: image
+      start: [0.1, 0.1]
+      size: [0.8, 0.6]
+    main_text: &main_text
+      type: text
+      start: [0.05, 0.75]
+      size: [0.9, 0.1]
+    top_centre: &top_centre
+      type: text
+      start: [0.05, 0.80]
+      size: [0.8, 0.1]
+    top_left: &top_left
+      type: text
+      start: [0.05, 0.80]
+      size: [0.4, 0.05]
+    top_right: &top_right
+      type: text
+      start: [0.55, 0.80]
+      size: [0.4, 0.05]
+    bottom_centre: &bottom_centre
+      type: text
+      start: [0.05, 0.85]
+      size: [0.8, 0.05]
+    bottom_left: &bottom_left
+      type: text
+      start: [0.05, 0.85]
+      size: [0.4, 0.05]
+    bottom_right: &bottom_right
+      type: text
+      start: [0.55, 0.85]
+      size: [0.4, 0.05]
+
+chapters:
+  - title: "Chapter 1: The Beginning"
+    flags:
+      - hasKey
+    start: start
+    scenes:
+      start:
+        targets:
+          default: init
+        versions:
+          init:
+            objects:
+              - <<: *main_text
+                text: This is the start of the book
+              - <<: *bottom_centre
+                text: Start
+                link: home
+      home:
+        objects:
+          - <<: *main_image
+            file: house.jpg
+        targets:
+          default: init
+        versions:
+          init:
+            objects:
+              - <<: *main_text
+                text: This is your house.
+              - <<: *top_left
+                text: Go left
+                link: tree
+              - <<: *top_right
+                text: Go right
+                link: gate
+              - <<: *bottom_centre
+                text: Inspect
+                choice: inspect
+          inspect:
+            objects:
+              - <<: *main_text
+                text: There's nothing here.
+              - <<: *top_left
+                text: Go left
+                link: tree
+              - <<: *top_right
+                text: Go right
+                link: gate
+      tree:
+        objects:
+          - <<: *main_image
+            file: tree.jpg
+        targets:
+          hasKey: init2
+          default: init
+        versions:
+          init:
+            objects:
+              - <<: *main_text
+                text: You see a tree.
+              - <<: *top_left
+                text: Go left
+                link: gate
+              - <<: *top_right
+                text: Go right
+                link: home
+              - <<: *bottom_centre
+                text: Inspect
+                choice: inspect
+          inspect:
+            set:
+              - hasKey
+            objects:
+              - <<: *main_text
+                text: You find a key!
+              - <<: *top_left
+                text: Go left
+                link: gate
+              - <<: *top_right
+                text: Go right
+                link: home
+          init2:
+            objects:
+              - <<: *main_text
+                text: You see a tree.
+              - <<: *top_left
+                text: Go left
+                link: gate
+              - <<: *top_right
+                text: Go right
+                link: home
+              - <<: *bottom_centre
+                text: Inspect
+                choice: inspect2
+          inspect2:
+            objects:
+              - <<: *main_text
+                text: There's nothing here.
+              - <<: *top_left
+                text: Go left
+                link: gate
+              - <<: *top_right
+                text: Go right
+                link: home
+   
+      gate:
+        objects:
+          - <<: *main_image
+            file: gate.jpg
+        targets:
+          hasKey: openable
+          default: init
+        versions:
+          init:
+            objects:
+              - <<: *main_text
+                text: This is a gate.
+              - <<: *top_left
+                text: Go left
+                link: home
+              - <<: *top_right
+                text: Go right
+                link: tree
+              - <<: *bottom_centre
+                text: Inspect
+                choice: inspect
+          inspect:
+            objects:
+              - <<: *main_text
+                text: There's nothing here.
+              - <<: *top_left
+                text: Go left
+                link: home
+              - <<: *top_right
+                text: Go right
+                link: tree
+          openable:
+            objects:
+              - <<: *main_text
+                text: This is a gate.
+              - <<: *top_left
+                text: Go left
+                link: home
+              - <<: *top_right
+                text: Go right
+                link: tree
+              - <<: *bottom_centre
+                text: Open gate with key
+                link: end
+      end:
+        objects:
+          - <<: *main_image
+            file: win.jpg
+        targets:
+          default: init
+        versions:
+          init:
+            objects:
+              - <<: *main_text
+                text: You win!
+  
